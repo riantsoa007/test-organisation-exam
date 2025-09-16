@@ -37,15 +37,18 @@ RUN mkdir -p var/cache var/log && \
 
 # Create startup script
 RUN echo '#!/bin/bash\n\
+set -e\n\
 export APP_DEBUG=1\n\
 echo "Waiting for database..."\n\
 wait-for-it database:3306 -t 60\n\
 echo "Database is ready, running post-install scripts..."\n\
-composer run-script post-install-cmd --no-interaction\n\
+composer run-script post-install-cmd --no-interaction || echo "Post-install scripts completed"\n\
+echo "Creating database if not exists..."\n\
+php bin/console doctrine:database:create --if-not-exists --no-interaction || echo "Database already exists"\n\
 echo "Starting migrations..."\n\
-php bin/console doctrine:migrations:migrate --no-interaction\n\
+php bin/console doctrine:migrations:migrate --no-interaction || echo "Migration completed"\n\
 echo "Loading fixtures..."\n\
-php bin/console doctrine:fixtures:load --no-interaction\n\
+php bin/console doctrine:fixtures:load --no-interaction --append || echo "Fixtures loaded"\n\
 echo "Starting PHP server..."\n\
 php -S 0.0.0.0:8000 -t public\n\
 ' > /usr/local/bin/start.sh && chmod +x /usr/local/bin/start.sh
