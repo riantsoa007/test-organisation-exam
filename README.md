@@ -28,9 +28,9 @@ docker compose up --build
 
 - Authentification JWT Bearer avec LexikJWTAuthenticationBundle
 - CRUD examens avec statuts et validation
-- Interface responsive Angular 18
-- Statistiques temps réel avec signals
-- Protection des routes et API endpoints
+- Interface avec angular 18
+- Statistiques 
+- API platform
 
 ## API Endpoints
 
