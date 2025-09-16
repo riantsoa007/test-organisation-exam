@@ -7,7 +7,7 @@ import { Exam, ExamStatus, ExamStats } from '../models/exam.model';
   providedIn: 'root'
 })
 export class ExamService {
-  private readonly apiUrl = 'http://localhost:8000/exams';
+  private readonly apiUrl = 'http://localhost:8000/api/exams';
 
   private examsSubject = new BehaviorSubject<Exam[]>([]);
   public exams$ = this.examsSubject.asObservable();
