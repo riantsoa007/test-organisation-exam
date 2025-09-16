@@ -1,29 +1,20 @@
-import { Injectable, signal, computed, inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, signal, computed } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Exam, ExamStatus, ExamStats } from '../models/exam.model';
-import { AuthService } from './auth.service';
-
-/**
- * Service managing exam data and API communication
- * Uses Angular signals for reactive state management
- */
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExamService {
-  private readonly apiUrl = 'http://localhost:8000/api/exams';
+  private readonly apiUrl = 'http://localhost:8000/exams';
 
-  // Observable for legacy subscription support
   private examsSubject = new BehaviorSubject<Exam[]>([]);
   public exams$ = this.examsSubject.asObservable();
 
-  // Signal-based reactive state
   private examsSignal = signal<Exam[]>([]);
   public exams = this.examsSignal.asReadonly();
 
-  // Computed statistics updated automatically when exams change
   public examStats = computed(() => {
     const exams = this.examsSignal();
     return {
@@ -34,17 +25,12 @@ export class ExamService {
     };
   });
 
-  private authService = inject(AuthService);
-
   constructor(private http: HttpClient) {}
 
-  getExams(): Observable<{[key: string]: Exam[]}> {
-    return this.http.get<{[key: string]: Exam[]}>(`${this.apiUrl}`, { headers: this.authService.getAuthHeaders() });
+  getExams(): Observable<any> {
+    return this.http.get(`${this.apiUrl}`);
   }
 
-  /**
-   * Load exams from API and update state
-   */
   loadExams(): void {
     this.getExams().subscribe({
       next: (response) => {
@@ -59,7 +45,7 @@ export class ExamService {
   }
 
   createExam(exam: Omit<Exam, 'id'>): Observable<Exam> {
-    return this.http.post<Exam>(this.apiUrl, exam, { headers: this.authService.getAuthHeaders() });
+    return this.http.post<Exam>(this.apiUrl, exam);
   }
 
   addExam(exam: Omit<Exam, 'id'>): void {
