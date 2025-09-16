@@ -23,7 +23,11 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // Admin user
+        // Clear existing users
+        $connection = $manager->getConnection();
+        $connection->executeStatement('DELETE FROM user');
+
+        // Create admin user
         $user = new User();
         $user->setEmail('admin@example.com');
         $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
@@ -33,5 +37,7 @@ class UserFixtures extends Fixture
 
         $manager->persist($user);
         $manager->flush();
+
+        echo "Admin user created: admin@example.com / password\n";
     }
 }
