@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+/dist/
+/build/
+
+# Environment files
+.env.local
+.env.production
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+pids/
+*.pid
+*.seed
+
+# Symfony specific
+/backend/var/
+/backend/vendor/
+/backend/.env.local
+
+# Angular specific
+/frontend/dist/
+/frontend/.angular/
+
+# Docker
+.docker/

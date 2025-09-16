@@ -1,0 +1,283 @@
+<div class="min-h-screen bg-white p-6">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Mes examens</h1>
+        <p class="text-sm text-gray-500 mt-1">{{ examService.exams().length }} examens à venir</p>
+      </div>
+      <div class="flex gap-3">
+        <button
+          (click)="toggleAddForm()"
+          class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+          Organiser un examen
+        </button>
+        <button
+          (click)="logout()"
+          class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+          Se déconnecter
+        </button>
+      </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class=" rounded-lg border border-gray-200 p-6 mb-6">
+      <h2 class="text-xl font-bold text-center text-gray-900 mb-6">Statistiques des examens</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+        <!-- Confirmé -->
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500 mb-1">Confirmé</p>
+              <p class="text-3xl font-bold text-green-500">{{ examService.examStats().confirmed }}</p>
+            </div>
+            <div class="flex items-center justify-center">
+              <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 10L12.2581 12.4436C12.6766 12.7574 13.2662 12.6957 13.6107 12.3021L20 5" stroke="#00c265" stroke-width="2" stroke-linecap="round"></path>
+                <path d="M21 12C21 13.8805 20.411 15.7137 19.3156 17.2423C18.2203 18.7709 16.6736 19.9179 14.893 20.5224C13.1123 21.1268 11.187 21.1583 9.38744 20.6125C7.58792 20.0666 6.00459 18.9707 4.85982 17.4789C3.71505 15.987 3.06635 14.174 3.00482 12.2945C2.94329 10.415 3.47203 8.56344 4.51677 6.99987C5.56152 5.4363 7.06979 4.23925 8.82975 3.57685C10.5897 2.91444 12.513 2.81996 14.3294 3.30667" stroke="#00c265" stroke-width="2" stroke-linecap="round"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- À organiser -->
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500 mb-1">À organiser</p>
+              <p class="text-3xl font-bold text-orange-500">{{ examService.examStats().toOrganize }}</p>
+            </div>
+            <div class="flex items-center justify-center">
+              <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 8.25V18C20 21 18.21 22 16 22H8C5.79 22 4 21 4 18V8.25C4 5 5.79 4.25 8 4.25C8 4.87 8.24997 5.43 8.65997 5.84C9.06997 6.25 9.63 6.5 10.25 6.5H13.75C14.99 6.5 16 5.49 16 4.25C18.21 4.25 20 5 20 8.25Z" stroke="#fe5d1e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M16 4.25C16 5.49 14.99 6.5 13.75 6.5H10.25C9.63 6.5 9.06997 6.25 8.65997 5.84C8.24997 5.43 8 4.87 8 4.25C8 3.01 9.01 2 10.25 2H13.75C14.37 2 14.93 2.25 15.34 2.66C15.75 3.07 16 3.63 16 4.25Z" stroke="#fe5d1e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M8 13H12" stroke="#fe5d1e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M8 17H16" stroke="#fe5d1e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Annulé -->
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500 mb-1">Annulé</p>
+              <p class="text-3xl font-bold text-red-500">{{ examService.examStats().cancelled }}</p>
+            </div>
+            <div class="flex items-center justify-center">
+              <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- En recherche de place -->
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500 mb-1">En recherche de place</p>
+              <p class="text-3xl font-bold text-blue-500">{{ examService.examStats().searchingLocation }}</p>
+            </div>
+            <div class="flex items-center justify-center">
+              <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Add Exam Form -->
+    <div *ngIf="showAddForm()" class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-6">
+      <h3 class="text-lg font-semibold mb-4">Ajouter un nouvel examen</h3>
+
+      <!-- Error Message -->
+      <div *ngIf="submissionError" class="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+        <span class="text-red-700 text-sm">{{ submissionError }}</span>
+      </div>
+
+      <form [formGroup]="examForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Nom de l'étudiant *</label>
+          <input
+            type="text"
+            formControlName="studentName"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            [class.border-red-500]="studentName?.invalid && studentName?.touched"
+            [class.border-gray-300]="!studentName?.invalid || !studentName?.touched"
+            placeholder="Ex: Jean Dupont">
+          <div *ngIf="getFieldErrorMessage('studentName')" class="mt-1 text-sm text-red-600">
+            {{ getFieldErrorMessage('studentName') }}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Lieu de l'examen</label>
+          <input
+            type="text"
+            formControlName="location"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            [class.border-red-500]="location?.invalid && location?.touched"
+            [class.border-gray-300]="!location?.invalid || !location?.touched"
+            placeholder="Ex: Salle A101">
+          <div *ngIf="getFieldErrorMessage('location')" class="mt-1 text-sm text-red-600">
+            {{ getFieldErrorMessage('location') }}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Date *</label>
+          <input
+            type="date"
+            formControlName="date"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            [class.border-red-500]="date?.invalid && date?.touched"
+            [class.border-gray-300]="!date?.invalid || !date?.touched">
+          <div *ngIf="getFieldErrorMessage('date')" class="mt-1 text-sm text-red-600">
+            {{ getFieldErrorMessage('date') }}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Heure *</label>
+          <input
+            type="time"
+            formControlName="time"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            [class.border-red-500]="time?.invalid && time?.touched"
+            [class.border-gray-300]="!time?.invalid || !time?.touched">
+          <div *ngIf="getFieldErrorMessage('time')" class="mt-1 text-sm text-red-600">
+            {{ getFieldErrorMessage('time') }}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Statut *</label>
+          <select
+            formControlName="status"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            [class.border-red-500]="status?.invalid && status?.touched"
+            [class.border-gray-300]="!status?.invalid || !status?.touched">
+            <option value="">Sélectionner un statut</option>
+            <option *ngFor="let status of availableStatuses" [value]="status">{{ status }}</option>
+          </select>
+          <div *ngIf="getFieldErrorMessage('status')" class="mt-1 text-sm text-red-600">
+            {{ getFieldErrorMessage('status') }}
+          </div>
+        </div>
+
+        <div class="flex items-end gap-2">
+          <button
+            type="submit"
+            [disabled]="isLoading"
+            class="bg-green-500 hover:bg-green-600 disabled:bg-gray-300 text-white px-4 py-2 rounded-md font-medium transition-colors">
+            <div *ngIf="isLoading" class="flex items-center">
+              <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+              Ajout...
+            </div>
+            <span *ngIf="!isLoading">Ajouter</span>
+          </button>
+          <button
+            type="button"
+            (click)="toggleAddForm()"
+            class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md font-medium transition-colors">
+            Annuler
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Exams List -->
+    <div class="space-y-3">
+      <div *ngFor="let exam of examService.exams()"
+           class="bg-white rounded-lg border border-gray-200 p-4 hover:bg-gray-50 transition-colors">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+
+          <!-- Student Name -->
+          <div class="flex items-center">
+            <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+              <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+            </div>
+            <span class="text-sm font-medium text-gray-900">{{ exam.studentName }}</span>
+          </div>
+
+          <!-- Location -->
+          <div class="flex items-center text-sm text-gray-600">
+            <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            <span [ngClass]="exam.location ? 'text-gray-900' : 'italic text-gray-500'">{{ exam.location || 'En attente' }}</span>
+          </div>
+
+          <!-- Date -->
+          <div class="flex items-center text-sm text-gray-600">
+            <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            <span [ngClass]="exam.date ? 'text-gray-900' : 'italic text-gray-500'">{{ formatDate(exam.date) || 'En attente' }}</span>
+          </div>
+
+          <!-- Time -->
+          <div class="flex items-center text-sm text-gray-600">
+            <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span [ngClass]="exam.time ? 'text-gray-900' : 'italic text-gray-500'">{{ formatTime(exam.time) || 'En attente' }}</span>
+          </div>
+
+          <!-- Status -->
+          <div class="flex justify-start">
+
+            <!-- Confirmé -->
+            <div *ngIf="exam.status === 'Confirmé'" class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-700">
+              <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+              Confirmé
+            </div>
+
+            <!-- À organiser -->
+            <div *ngIf="exam.status === 'À organiser'" class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-orange-100 text-orange-600">
+              <svg class="w-3 h-3 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z" stroke="#fe5d1e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              À organiser
+            </div>
+
+            <!-- Annulé -->
+            <div *ngIf="exam.status === 'Annulé'" class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-red-100 text-red-600">
+              <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+              Annulé
+            </div>
+
+            <!-- En recherche de place -->
+            <div *ngIf="exam.status === 'En recherche de place'" class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-600">
+              <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M6 2v6h.01L6 8.01 10 12l-4 4 .01.01H6V22h12v-5.99h-.01L18 16l-4-4 4-3.99-.01-.01H18V2H6zm10 14.5V20H8v-3.5l4-4 4 4zm0-9V11l-4 4-4-4V7.5l4-4 4 4z"/>
+              </svg>
+              En recherche de place
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <div *ngIf="examService.exams().length === 0" class="text-center py-12 bg-white rounded-lg border border-gray-200">
+        <div class="text-gray-400 text-6xl mb-4">📝</div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">Aucun examen programmé</h3>
+        <p class="text-gray-600">Commencez par organiser votre premier examen.</p>
+      </div>
+    </div>
+  </div>
+</div>

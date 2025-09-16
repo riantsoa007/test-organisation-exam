@@ -1,0 +1,60 @@
+services:
+  database:
+    image: mariadb:10.11
+    container_name: exam_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: exam_management
+      MYSQL_USER: exam_user
+      MYSQL_PASSWORD: exam_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - exam_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: exam_backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: mysql://exam_user:exam_password@database:3306/exam_management
+      APP_ENV: dev
+      APP_SECRET: your-secret-key-here-docker
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - exam_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: exam_frontend
+    ports:
+      - "4200:4200"
+    environment:
+      - API_URL=http://localhost:8000
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - exam_network
+
+volumes:
+  db_data:
+
+networks:
+  exam_network:
+    driver: bridge
