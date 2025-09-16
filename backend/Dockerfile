@@ -43,8 +43,9 @@ echo "Waiting for database..."\n\
 wait-for-it database:3306 -t 60\n\
 echo "Database is ready, running post-install scripts..."\n\
 composer run-script post-install-cmd --no-interaction || echo "Post-install scripts completed"\n\
-echo "Creating database if not exists..."\n\
-php bin/console doctrine:database:create --if-not-exists --no-interaction || echo "Database already exists"\n\
+echo "Dropping and recreating database..."\n\
+php bin/console doctrine:database:drop --force --no-interaction || echo "Database drop completed"\n\
+php bin/console doctrine:database:create --no-interaction || echo "Database created"\n\
 echo "Starting migrations..."\n\
 php bin/console doctrine:migrations:migrate --no-interaction || echo "Migration completed"\n\
 echo "Loading fixtures..."\n\
