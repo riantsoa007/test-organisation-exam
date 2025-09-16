@@ -21,9 +21,6 @@ final class Version20241212000000 extends AbstractMigration
             email VARCHAR(180) NOT NULL UNIQUE,
             roles JSON NOT NULL,
             password VARCHAR(255) NOT NULL,
-            name VARCHAR(255) NOT NULL,
-            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY(id),
             UNIQUE INDEX UNIQ_8D93D649E7927C74 (email)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');

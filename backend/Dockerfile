@@ -48,7 +48,7 @@ php bin/console doctrine:database:create --if-not-exists --no-interaction || ech
 echo "Starting migrations..."\n\
 php bin/console doctrine:migrations:migrate --no-interaction || echo "Migration completed"\n\
 echo "Loading fixtures..."\n\
-php bin/console doctrine:fixtures:load --no-interaction --append || echo "Fixtures loaded"\n\
+php bin/console doctrine:fixtures:load --no-interaction || echo "Fixtures loaded"\n\
 echo "Starting PHP server..."\n\
 php -S 0.0.0.0:8000 -t public\n\
 ' > /usr/local/bin/start.sh && chmod +x /usr/local/bin/start.sh
